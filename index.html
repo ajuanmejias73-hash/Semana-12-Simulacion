@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simulación: Cinemática de Rotación - Laboratorio de Física I</title>
+    <!-- Proyecto Académico - Grupo: Melissa, Isaac, María, Reychell y Juan -->
     <style>
         :root {
             --bg-dark: #1e272e; --panel-bg: #2d3436; --panel-card: #353b48;
@@ -56,7 +57,7 @@
 
     <header>
         <h1>Simulación: Cinemática de Rotación</h1>
-        <span class="subtitle">Modelo Físico Experimental Digital</span>
+        <span class="subtitle">Laboratorio de Física I &bull; Universidad Fidélitas</span>
     </header>
 
     <div id="app-container">
@@ -77,7 +78,6 @@
                     <span>Velocidad Ang. (&omega;₀):</span>
                     <span class="val-badge" id="val-omega">0.00 rad/s</span>
                 </div>
-                <!-- Incrementé el rango de velocidad inicial para que el impacto físico sea evidente -->
                 <input type="range" id="sl-omega" min="0" max="25" step="0.5" value="0.00">
             </div>
 
@@ -86,7 +86,6 @@
                     <span>Aceleración Ang. (&alpha;):</span>
                     <span class="val-badge" id="val-alpha">9.63 rad/s²</span>
                 </div>
-                <!-- Ahora permite aceleración 0 para simular Movimiento Circular Uniforme -->
                 <input type="range" id="sl-alpha" min="0.00" max="15.00" step="0.1" value="9.63">
             </div>
 
@@ -95,7 +94,6 @@
                     <span>Descenso Inicial (y₀):</span>
                     <span class="val-badge" id="val-y0" style="color: var(--accent-yellow);">0.00 m</span>
                 </div>
-                <!-- Nuevo Control para la Altura de la Cuerda -->
                 <input type="range" id="sl-y0" min="0.00" max="1.00" step="0.01" value="0.00">
             </div>
 
@@ -159,12 +157,12 @@
         const slTheta = document.getElementById('sl-theta');
         const slOmega = document.getElementById('sl-omega');
         const slAlpha = document.getElementById('sl-alpha');
-        const slY0 = document.getElementById('sl-y0'); // Nuevo Slider Y0
+        const slY0 = document.getElementById('sl-y0'); 
 
         const valTheta = document.getElementById('val-theta');
         const valOmega = document.getElementById('val-omega');
         const valAlpha = document.getElementById('val-alpha');
-        const valY0 = document.getElementById('val-y0'); // Nuevo Valor Y0
+        const valY0 = document.getElementById('val-y0'); 
 
         const outT = document.getElementById('out-t');
         const outTheta = document.getElementById('out-theta');
@@ -209,13 +207,11 @@
             valY0.textContent = y_0.toFixed(2) + " m";
 
             if (!isRunning && t === 0) {
-                // Sincroniza la posición visual instantáneamente con los controles
-                // Se suma la posición de ajuste fino (theta_0) y el giro provocado por desenrollar (y_0 / r)
                 currentTheta = theta_0 + (y_0 / R_AXLE); 
                 currentOmega = omega_0;
                 currentV = omega_0 * R_AXLE;
                 currentY = y_0;
-                dataHistory = []; // Resetea las gráficas al mover sliders
+                dataHistory = []; 
                 
                 drawSimulation();
                 drawGraphs();
@@ -310,20 +306,15 @@
             if (dt > 0.1) dt = 0.016; 
             t += dt;
 
-            // Cinemática rigurosa basada en el desplazamiento dinámico
             let deltaThetaDinámico = (omega_0 * t) + (0.5 * alpha * t * t);
             
-            // La posición theta total es: el offset + lo desenrollado manualmente + el giro dinámico
             currentTheta = theta_0 + (y_0 / R_AXLE) + deltaThetaDinámico;
-            
             currentOmega = omega_0 + (alpha * t);
             currentV = currentOmega * R_AXLE;
-            currentY = y_0 + (deltaThetaDinámico * R_AXLE); // Incorpora la altura inicial
+            currentY = y_0 + (deltaThetaDinámico * R_AXLE); 
 
-            // Control de colisión con el piso (1.00 m)
             if (currentY >= L_MAX) {
                 currentY = L_MAX;
-                // Corrige la rotación final exacta
                 currentTheta = theta_0 + (L_MAX / R_AXLE); 
                 isRunning = false;
                 btnStart.textContent = "Iniciar";
@@ -359,7 +350,7 @@
             t = 0; dataHistory = [];
             btnStart.textContent = "Iniciar"; btnStart.style.backgroundColor = "var(--accent-green)";
             toggleInputs(false);
-            updateInputs(); // Lee de los sliders y reinicia físicamente la masa a 'y_0'
+            updateInputs(); 
         });
 
         resizeGraphs(); updateInputs();
