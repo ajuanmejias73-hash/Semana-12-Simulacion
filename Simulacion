@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulación: Cinemática de Rotación - Laboratorio de Física I</title>
+    <style>
+        :root {
+            --bg-dark: #1e272e;
+            --panel-bg: #2d3436;
+            --panel-card: #353b48;
+            --accent-blue: #0984e3;
+            --accent-green: #00b894;
+            --accent-red: #d63031;
+            --accent-orange: #e17055;
+            --accent-yellow: #f1c40f;
+            --text-light: #dfe6e9;
+            --text-muted: #b2bec3;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Encabezado Superior */
+        header {
+            background-color: #0f1418;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--accent-blue);
+        }
+
+        header h1 {
+            font-size: 1.25rem;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        header .subtitle {
+            font-size: 0.85rem;
+            color: var(--accent-blue);
+            font-weight: 500;
+        }
+
+        /* Layout Principal */
+        #app-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* Panel de Control Lateral */
+        #sidebar {
+            width: 320px;
+            background-color: var(--panel-bg);
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            box-shadow: 3px 0 12px rgba(0,0,0,0.4);
+            z-index: 10;
+            overflow-y: auto;
+        }
+
+        .section-title {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--accent-blue);
+            border-bottom: 2px solid var(--accent-blue);
+            padding-bottom: 6px;
+            margin-bottom: 4px;
+        }
+
+        .control-card {
+            background-color: var(--panel-card);
+            padding: 12px 14px;
+            border-radius: 8px;
+            border: 1px solid #485460;
+        }
+
+        .control-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .val-badge {
+            font-weight: 700;
+            color: #74b9ff;
+            font-family: monospace;
+            font-size: 0.95rem;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            cursor: pointer;
+            accent-color: var(--accent-blue);
+        }
+
+        /* Botones de Control */
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: background 0.2s ease, transform 0.1s ease;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        #btn-start {
+            background-color: var(--accent-green);
+            color: white;
+        }
+
+        #btn-start:hover {
+            background-color: #00a884;
+        }
+
+        #btn-reset {
+            background-color: var(--accent-red);
+            color: white;
+        }
+
+        #btn-reset:hover {
+            background-color: #c0392b;
+        }
+
+        /* Dashboard de Mediciones */
+        #dashboard {
+            background-color: var(--panel-card);
+            border: 1px solid #485460;
+            padding: 14px;
+            border-radius: 8px;
+            margin-top: auto;
+        }
+
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.88rem;
+            margin-bottom: 8px;
+            padding-bottom: 4px;
+            border-bottom: 1px dashed #485460;
+        }
+
+        .metric-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .metric-val {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.05rem;
+            font-weight: bold;
+        }
+
+        /* Área Visual y Gráfica */
+        #workspace {
+            flex: 1;
+            display: flex;
+            background-color: #2c3e50;
+        }
+
+        /* Simulación Interactiva */
+        #sim-wrapper {
+            width: 380px;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-right: 3px solid #1e272e;
+            position: relative;
+        }
+
+        canvas#simCanvas {
+            background-color: #ffffff;
+        }
+
+        /* Gráficas Estilo LabQuest */
+        #graphs-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 14px;
+            gap: 14px;
+            background-color: #dcdde1;
+        }
+
+        .graph-card {
+            flex: 1;
+            background-color: #ffffff;
+            border-radius: 8px;
+            border: 1px solid #b2bec3;
+            position: relative;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .graph-header {
+            position: absolute;
+            top: 8px;
+            left: 14px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #2d3436;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 3px 8px;
+            border-radius: 4px;
+            border: 1px solid #cbd5e1;
+            z-index: 5;
+        }
+
+        canvas.graph-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Simulación: Cinemática de Rotación</h1>
+        <span class="subtitle">Laboratorio de Física I &bull; Modelo Experimental Digital</span>
+    </header>
+
+    <div id="app-container">
+        <!-- Panel Lateral de Controles -->
+        <div id="sidebar">
+            <h2 class="section-title">Parámetros Iniciales</h2>
+
+            <div class="control-card">
+                <div class="control-label">
+                    <span>Posición Ang. (&theta;₀):</span>
+                    <span class="val-badge" id="val-theta">0.00 rad</span>
+                </div>
+                <input type="range" id="sl-theta" min="-6.28" max="6.28" step="0.1" value="0.00">
+            </div>
+
+            <div class="control-card">
+                <div class="control-label">
+                    <span>Velocidad Ang. (&omega;₀):</span>
+                    <span class="val-badge" id="val-omega">0.00 rad/s</span>
+                </div>
+                <input type="range" id="sl-omega" min="0" max="10" step="0.1" value="0.00">
+            </div>
+
+            <div class="control-card">
+                <div class="control-label">
+                    <span>Aceleración Ang. (&alpha;):</span>
+                    <span class="val-badge" id="val-alpha">9.63 rad/s²</span>
+                </div>
+                <input type="range" id="sl-alpha" min="1.00" max="15.00" step="0.05" value="9.63">
+            </div>
+
+            <div class="btn-group">
+                <button id="btn-start">Iniciar</button>
+                <button id="btn-reset">Reiniciar</button>
+            </div>
+
+            <div id="dashboard">
+                <h2 class="section-title" style="margin-bottom: 10px;">Mediciones en Vivo</h2>
+                <div class="metric-row">
+                    <span>Tiempo (t):</span>
+                    <span class="metric-val" id="out-t" style="color: #00b894;">0.00 s</span>
+                </div>
+                <div class="metric-row">
+                    <span>Posición (&theta;):</span>
+                    <span class="metric-val" id="out-theta" style="color: #74b9ff;">0.00 rad</span>
+                </div>
+                <div class="metric-row">
+                    <span>Velocidad (&omega;):</span>
+                    <span class="metric-val" id="out-omega" style="color: #e17055;">0.00 rad/s</span>
+                </div>
+                <div class="metric-row">
+                    <span>Velocidad Lineal (v):</span>
+                    <span class="metric-val" id="out-v" style="color: #a29bfe;">0.000 m/s</span>
+                </div>
+                <div class="metric-row">
+                    <span>Descenso Cuerda (y):</span>
+                    <span class="metric-val" id="out-y" style="color: #f1c40f;">0.000 m</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Área Central de Trabajo -->
+        <div id="workspace">
+            <!-- Modelo Gráfico de la Máquina -->
+            <div id="sim-wrapper">
+                <canvas id="simCanvas" width="380" height="750"></canvas>
+            </div>
+
+            <!-- Gráficas Dinámicas -->
+            <div id="graphs-wrapper">
+                <div class="graph-card">
+                    <div class="graph-header">&theta;(t) - Posición Angular vs Tiempo</div>
+                    <canvas id="graphTheta" class="graph-canvas"></canvas>
+                </div>
+                <div class="graph-card">
+                    <div class="graph-header">&omega;(t) - Velocidad Angular vs Tiempo</div>
+                    <canvas id="graphOmega" class="graph-canvas"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Referencias del DOM
+        const simCanvas = document.getElementById('simCanvas');
+        const simCtx = simCanvas.getContext('2d');
+        const canvasTheta = document.getElementById('graphTheta');
+        const ctxTheta = canvasTheta.getContext('2d');
+        const canvasOmega = document.getElementById('graphOmega');
+        const ctxOmega = canvasOmega.getContext('2d');
+
+        const slTheta = document.getElementById('sl-theta');
+        const slOmega = document.getElementById('sl-omega');
+        const slAlpha = document.getElementById('sl-alpha');
+
+        const valTheta = document.getElementById('val-theta');
+        const valOmega = document.getElementById('val-omega');
+        const valAlpha = document.getElementById('val-alpha');
+
+        const outT = document.getElementById('out-t');
+        const outTheta = document.getElementById('out-theta');
+        const outOmega = document.getElementById('out-omega');
+        const outV = document.getElementById('out-v');
+        const outY = document.getElementById('out-y');
+
+        const btnStart = document.getElementById('btn-start');
+        const btnReset = document.getElementById('btn-reset');
+
+        // Constantes Físicas del Laboratorio
+        const R_AXLE = 0.0076;    // Radio del eje donde se enrolla la cuerda (0.76 cm = 0.0076 m)
+        const L_MAX = 1.0;        // Longitud total de la cuerda (1.0 metro)
+
+        // Variables de Estado
+        let theta_0 = 0;
+        let omega_0 = 0;
+        let alpha = 9.63;
+
+        let t = 0;
+        let currentTheta = 0;
+        let currentOmega = 0;
+        let currentV = 0;
+        let currentY = 0;
+
+        let isRunning = false;
+        let lastTimestamp = 0;
+        let animationId = null;
+
+        // Historial de datos para graficar
+        let dataHistory = [];
+
+        // Geometría Visual del Renderizado
+        const pulleyX = 190;
+        const pulleyY = 130;
+        const groundY = 680;
+        const pxPerMeter = (groundY - pulleyY) / L_MAX; // 1 metro escala exactamente hasta el suelo visual
+
+        function resizeGraphs() {
+            canvasTheta.width = canvasTheta.parentElement.clientWidth;
+            canvasTheta.height = canvasTheta.parentElement.clientHeight;
+            canvasOmega.width = canvasOmega.parentElement.clientWidth;
+            canvasOmega.height = canvasOmega.parentElement.clientHeight;
+            drawGraphs();
+        }
+        window.addEventListener('resize', resizeGraphs);
+
+        function updateInputs() {
+            theta_0 = parseFloat(slTheta.value);
+            omega_0 = parseFloat(slOmega.value);
+            alpha = parseFloat(slAlpha.value);
+
+            valTheta.textContent = theta_0.toFixed(2) + " rad";
+            valOmega.textContent = omega_0.toFixed(2) + " rad/s";
+            valAlpha.textContent = alpha.toFixed(2) + " rad/s²";
+
+            if (!isRunning && t === 0) {
+                currentTheta = theta_0;
+                currentOmega = omega_0;
+                currentV = omega_0 * R_AXLE;
+                currentY = 0;
+                drawSimulation();
+                drawGraphs();
+            }
+        }
+
+        [slTheta, slOmega, slAlpha].forEach(input => input.addEventListener('input', updateInputs));
+
+        function drawSimulation() {
+            simCtx.clearRect(0, 0, simCanvas.width, simCanvas.height);
+
+            // 1. Base del soporte (Azul experimental)
+            simCtx.fillStyle = '#0984e3';
+            simCtx.fillRect(pulleyX - 65, groundY + 30, 130, 18);
+            simCtx.fillStyle = '#2980b9';
+            simCtx.fillRect(pulleyX - 55, groundY + 25, 110, 5);
+
+            // 2. Varilla metálica vertical
+            simCtx.fillStyle = '#bdc3c7';
+            simCtx.fillRect(pulleyX - 6, pulleyY - 50, 12, groundY - pulleyY + 75);
+            simCtx.fillStyle = '#7f8c8d';
+            simCtx.fillRect(pulleyX + 2, pulleyY - 50, 4, groundY - pulleyY + 75);
+
+            // 3. Sensor de rotación (Caja negra)
+            simCtx.fillStyle = '#2d3436';
+            simCtx.fillRect(pulleyX - 30, pulleyY - 20, 60, 40);
+            simCtx.fillStyle = '#636e72';
+            simCtx.fillRect(pulleyX - 26, pulleyY - 16, 52, 4);
+
+            // 4. Cuerda (Desciende verticalmente)
+            let massVisualY = pulleyY + (currentY * pxPerMeter);
+            simCtx.beginPath();
+            simCtx.moveTo(pulleyX + 12, pulleyY);
+            simCtx.lineTo(pulleyX + 12, massVisualY);
+            simCtx.strokeStyle = '#2c3e50';
+            simCtx.lineWidth = 2.5;
+            simCtx.stroke();
+
+            // 5. Masa Colgante (Cilindro metálico)
+            simCtx.fillStyle = '#7f8c8d';
+            simCtx.fillRect(pulleyX - 3, massVisualY, 30, 42);
+            simCtx.fillStyle = '#b2bec3';
+            simCtx.fillRect(pulleyX + 3, massVisualY, 8, 42);
+            simCtx.fillStyle = '#2d3436';
+            simCtx.fillRect(pulleyX + 9, massVisualY - 6, 6, 6); // Gancho superior
+
+            // 6. Disco / Polea Giratoria
+            simCtx.save();
+            simCtx.translate(pulleyX, pulleyY);
+            simCtx.rotate(currentTheta);
+
+            // Disco exterior (Plateado)
+            simCtx.beginPath();
+            simCtx.arc(0, 0, 42, 0, 2 * Math.PI);
+            simCtx.fillStyle = '#dcdde1';
+            simCtx.fill();
+            simCtx.lineWidth = 2;
+            simCtx.strokeStyle = '#7f8c8d';
+            simCtx.stroke();
+
+            // Ranura / Eje interno de enrollado
+            simCtx.beginPath();
+            simCtx.arc(0, 0, 12, 0, 2 * Math.PI);
+            simCtx.fillStyle = '#636e72';
+            simCtx.fill();
+
+            // Marcadores de radios y agujeros (Simulando la fotocélula de laboratorio)
+            for (let i = 0; i < 8; i++) {
+                simCtx.beginPath();
+                simCtx.arc(26, 0, 4, 0, 2 * Math.PI);
+                simCtx.fillStyle = '#2d3436';
+                simCtx.fill();
+
+                simCtx.beginPath();
+                simCtx.moveTo(12, 0);
+                simCtx.lineTo(42, 0);
+                simCtx.strokeStyle = '#b2bec3';
+                simCtx.lineWidth = 1.5;
+                simCtx.stroke();
+
+                simCtx.rotate(Math.PI / 4);
+            }
+
+            // Marca de referencia principal (Roja)
+            simCtx.beginPath();
+            simCtx.moveTo(0, 0);
+            simCtx.lineTo(42, 0);
+            simCtx.strokeStyle = '#e74c3c';
+            simCtx.lineWidth = 3;
+            simCtx.stroke();
+
+            simCtx.restore();
+
+            // Actualizar panel numérico
+            outT.textContent = t.toFixed(2) + " s";
+            outTheta.textContent = currentTheta.toFixed(2) + " rad";
+            outOmega.textContent = currentOmega.toFixed(2) + " rad/s";
+            outV.textContent = currentV.toFixed(3) + " m/s";
+            outY.textContent = currentY.toFixed(3) + " m";
+        }
+
+        function drawGraphs() {
+            ctxTheta.clearRect(0, 0, canvasTheta.width, canvasTheta.height);
+            ctxOmega.clearRect(0, 0, canvasOmega.width, canvasOmega.height);
+
+            // Dibujar rejilla base
+            drawGrid(ctxTheta, canvasTheta);
+            drawGrid(ctxOmega, canvasOmega);
+
+            if (dataHistory.length === 0) return;
+
+            let maxT = Math.max(6, t);
+            let maxTheta = Math.max(140, currentTheta);
+            let maxOmega = Math.max(60, currentOmega);
+
+            plotCurve(ctxTheta, canvasTheta, 'theta', maxT, maxTheta, '#e17055');
+            plotCurve(ctxOmega, canvasOmega, 'omega', maxT, maxOmega, '#0984e3');
+        }
+
+        function drawGrid(ctx, canvas) {
+            ctx.beginPath();
+            ctx.strokeStyle = '#f1f2f6';
+            ctx.lineWidth = 1;
+            const rows = 4;
+            const cols = 6;
+            for (let i = 1; i < rows; i++) {
+                let y = (canvas.height / rows) * i;
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+            }
+            for (let j = 1; j < cols; j++) {
+                let x = (canvas.width / cols) * j;
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+            }
+            ctx.stroke();
+        }
+
+        function plotCurve(ctx, canvas, key, maxScaleX, maxScaleY, color) {
+            ctx.beginPath();
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2.5;
+
+            const padding = 10;
+            const w = canvas.width - padding * 2;
+            const h = canvas.height - padding * 2;
+
+            dataHistory.forEach((pt, idx) => {
+                let x = padding + (pt.t / maxScaleX) * w;
+                let y = canvas.height - padding - (pt[key] / maxScaleY) * h;
+
+                if (idx === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            });
+            ctx.stroke();
+        }
+
+        function gameLoop(timestamp) {
+            if (!isRunning) return;
+
+            if (!lastTimestamp) lastTimestamp = timestamp;
+            let dt = (timestamp - lastTimestamp) / 1000;
+            lastTimestamp = timestamp;
+
+            // Limitar saltos de tiempo excesivos si cambia de pestaña
+            if (dt > 0.1) dt = 0.016;
+
+            t += dt;
+
+            // Ecuaciones de Cinemática Rotacional Uniformemente Acelerada (MCUA)
+            currentTheta = theta_0 + (omega_0 * t) + (0.5 * alpha * t * t);
+            currentOmega = omega_0 + (alpha * t);
+            currentV = currentOmega * R_AXLE;
+            currentY = (currentTheta - theta_0) * R_AXLE;
+
+            // Condición límite: la cuerda se desenrolló por completo (1 metro)
+            if (currentY >= L_MAX) {
+                currentY = L_MAX;
+                isRunning = false;
+                btnStart.textContent = "Iniciar";
+                btnStart.style.backgroundColor = "var(--accent-green)";
+                toggleInputs(false);
+            }
+
+            // Registrar punto de gráfica cada ~40ms
+            if (dataHistory.length === 0 || t - dataHistory[dataHistory.length - 1].t >= 0.04) {
+                dataHistory.push({ t: t, theta: currentTheta, omega: currentOmega });
+            }
+
+            drawSimulation();
+            drawGraphs();
+
+            if (isRunning) {
+                animationId = requestAnimationFrame(gameLoop);
+            }
+        }
+
+        function toggleInputs(disabled) {
+            slTheta.disabled = disabled;
+            slOmega.disabled = disabled;
+            slAlpha.disabled = disabled;
+        }
+
+        btnStart.addEventListener('click', () => {
+            if (!isRunning && currentY < L_MAX) {
+                isRunning = true;
+                lastTimestamp = 0;
+                btnStart.textContent = "Pausar";
+                btnStart.style.backgroundColor = "var(--accent-orange)";
+                toggleInputs(true);
+                animationId = requestAnimationFrame(gameLoop);
+            } else if (isRunning) {
+                isRunning = false;
+                cancelAnimationFrame(animationId);
+                btnStart.textContent = "Continuar";
+                btnStart.style.backgroundColor = "var(--accent-green)";
+            }
+        });
+
+        btnReset.addEventListener('click', () => {
+            isRunning = false;
+            cancelAnimationFrame(animationId);
+            t = 0;
+            currentY = 0;
+            dataHistory = [];
+            btnStart.textContent = "Iniciar";
+            btnStart.style.backgroundColor = "var(--accent-green)";
+            toggleInputs(false);
+            updateInputs();
+        });
+
+        // Inicialización del sistema
+        resizeGraphs();
+        updateInputs();
+    </script>
+</body>
+</html>
