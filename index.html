@@ -22,31 +22,30 @@
         #app-container { display: flex; flex: 1; overflow: hidden; }
         
         /* Panel Lateral de Controles */
-        #sidebar { width: 340px; background-color: var(--panel-bg); padding: 16px; display: flex; flex-direction: column; gap: 10px; box-shadow: 3px 0 12px rgba(0,0,0,0.4); z-index: 10; overflow-y: auto; }
-        .section-title { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--accent-blue); border-bottom: 2px solid var(--accent-blue); padding-bottom: 4px; margin-bottom: 2px; }
-        .control-card { background-color: var(--panel-card); padding: 8px 12px; border-radius: 8px; border: 1px solid #485460; }
-        .control-label { display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 4px; font-weight: 500; }
-        .val-badge { font-weight: 700; color: #74b9ff; font-family: monospace; font-size: 0.9rem; }
-        input[type="range"] { width: 100%; cursor: pointer; accent-color: var(--accent-blue); }
+        #sidebar { width: 350px; background-color: var(--panel-bg); padding: 14px; display: flex; flex-direction: column; gap: 8px; box-shadow: 3px 0 12px rgba(0,0,0,0.4); z-index: 10; overflow-y: auto; }
+        .section-title { font-size: 0.88rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--accent-blue); border-bottom: 2px solid var(--accent-blue); padding-bottom: 3px; margin-bottom: 2px; }
+        .control-card { background-color: var(--panel-card); padding: 7px 10px; border-radius: 6px; border: 1px solid #485460; }
+        .control-label { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 3px; font-weight: 500; }
+        .val-badge { font-weight: 700; color: #74b9ff; font-family: monospace; font-size: 0.85rem; }
+        input[type="range"] { width: 100%; cursor: pointer; accent-color: var(--accent-blue); height: 6px; }
         
         /* Botones */
-        .btn-group { display: flex; gap: 10px; margin-top: 2px; }
-        button { flex: 1; padding: 10px; border: none; border-radius: 6px; font-weight: 700; font-size: 0.85rem; cursor: pointer; text-transform: uppercase; transition: background 0.2s ease, transform 0.1s ease; }
-        button:active { transform: scale(0.98); }
+        .btn-group { display: flex; gap: 8px; margin-top: 2px; }
+        button { flex: 1; padding: 9px; border: none; border-radius: 6px; font-weight: 700; font-size: 0.85rem; cursor: pointer; text-transform: uppercase; transition: background 0.2s ease; }
         #btn-start { background-color: var(--accent-green); color: white; }
         #btn-start:hover { background-color: #00a884; }
         #btn-reset { background-color: var(--accent-red); color: white; }
         #btn-reset:hover { background-color: #c0392b; }
 
         /* Dashboard */
-        #dashboard { background-color: var(--panel-card); border: 1px solid #485460; padding: 12px; border-radius: 8px; margin-top: auto; }
-        .metric-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; margin-bottom: 5px; padding-bottom: 3px; border-bottom: 1px dashed #485460; }
+        #dashboard { background-color: var(--panel-card); border: 1px solid #485460; padding: 10px; border-radius: 6px; margin-top: auto; }
+        .metric-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; margin-bottom: 4px; padding-bottom: 2px; border-bottom: 1px dashed #485460; }
         .metric-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-        .metric-val { font-family: 'Courier New', Courier, monospace; font-size: 1rem; font-weight: bold; }
+        .metric-val { font-family: 'Courier New', Courier, monospace; font-size: 0.95rem; font-weight: bold; }
 
         /* Área Visual */
         #workspace { flex: 1; display: flex; background-color: #2c3e50; }
-        #sim-wrapper { width: 420px; background-color: #ffffff; display: flex; justify-content: center; align-items: center; border-right: 3px solid #1e272e; position: relative; }
+        #sim-wrapper { width: 440px; background-color: #ffffff; display: flex; justify-content: center; align-items: center; border-right: 3px solid #1e272e; position: relative; }
         #graphs-wrapper { flex: 1; display: flex; flex-direction: column; padding: 14px; gap: 14px; background-color: #dcdde1; }
         .graph-card { flex: 1; background-color: #ffffff; border-radius: 8px; border: 1px solid #b2bec3; position: relative; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow: hidden; }
         .graph-header { position: absolute; top: 8px; left: 14px; font-size: 0.85rem; font-weight: bold; color: #2d3436; background: rgba(255, 255, 255, 0.9); padding: 3px 8px; border-radius: 4px; border: 1px solid #cbd5e1; z-index: 5; }
@@ -61,25 +60,35 @@
     </header>
 
     <div id="app-container">
-        <!-- Panel Lateral de Controles -->
+        <!-- Panel Lateral con Controles de Radios -->
         <div id="sidebar">
-            <h2 class="section-title">Parámetros Físicos y Geométricos</h2>
+            <h2 class="section-title">Geometría y Radios</h2>
 
             <div class="control-card" style="border-color: var(--accent-purple);">
                 <div class="control-label">
-                    <span>Radio del Disco (R<sub>disc</sub>):</span>
+                    <span>Radio Disco Superior (Plateado):</span>
                     <span class="val-badge" id="val-rdisc" style="color: var(--accent-purple);">50 px</span>
                 </div>
                 <input type="range" id="sl-rdisc" min="30" max="80" step="2" value="50">
             </div>
 
+            <div class="control-card" style="border-color: var(--accent-green);">
+                <div class="control-label">
+                    <span>Radio Rueda Guía (Verde):</span>
+                    <span class="val-badge" id="val-rguide" style="color: var(--accent-green);">12 px</span>
+                </div>
+                <input type="range" id="sl-rguide" min="8" max="25" step="1" value="12">
+            </div>
+
             <div class="control-card" style="border-color: var(--accent-yellow);">
                 <div class="control-label">
-                    <span>Radio del Eje/Polea Cuerda (r):</span>
+                    <span>Radio Eje Cuerda (r):</span>
                     <span class="val-badge" id="val-raxle" style="color: var(--accent-yellow);">0.0076 m</span>
                 </div>
                 <input type="range" id="sl-raxle" min="0.0040" max="0.0150" step="0.0002" value="0.0076">
             </div>
+
+            <h2 class="section-title" style="margin-top: 4px;">Cinemática Inicial</h2>
 
             <div class="control-card">
                 <div class="control-label">
@@ -119,7 +128,7 @@
             </div>
 
             <div id="dashboard">
-                <h2 class="section-title" style="margin-bottom: 8px;">Mediciones en Vivo</h2>
+                <h2 class="section-title" style="margin-bottom: 6px;">Mediciones en Vivo</h2>
                 <div class="metric-row"><span>Tiempo (t):</span> <span class="metric-val" id="out-t" style="color: #00b894;">0.00 s</span></div>
                 <div class="metric-row"><span>Posición (&theta;):</span> <span class="metric-val" id="out-theta" style="color: #74b9ff;">0.00 rad</span></div>
                 <div class="metric-row"><span>Velocidad (&omega;):</span> <span class="metric-val" id="out-omega" style="color: #e17055;">0.00 rad/s</span></div>
@@ -131,7 +140,7 @@
         <!-- Área Visual -->
         <div id="workspace">
             <div id="sim-wrapper">
-                <canvas id="simCanvas" width="420" height="750"></canvas>
+                <canvas id="simCanvas" width="440" height="750"></canvas>
             </div>
             <div id="graphs-wrapper">
                 <div class="graph-card">
@@ -155,6 +164,7 @@
         const ctxOmega = canvasOmega.getContext('2d');
 
         const slRdisc = document.getElementById('sl-rdisc');
+        const slRguide = document.getElementById('sl-rguide');
         const slRaxle = document.getElementById('sl-raxle');
         const slTheta = document.getElementById('sl-theta');
         const slOmega = document.getElementById('sl-omega');
@@ -162,6 +172,7 @@
         const slY0 = document.getElementById('sl-y0');
 
         const valRdisc = document.getElementById('val-rdisc');
+        const valRguide = document.getElementById('val-rguide');
         const valRaxle = document.getElementById('val-raxle');
         const valTheta = document.getElementById('val-theta');
         const valOmega = document.getElementById('val-omega');
@@ -178,14 +189,15 @@
 
         const L_MAX = 1.0; 
 
-        let R_DISC = 50;  // Radio visual del disco superior
+        let R_DISC = 50;     // Radio del disco superior plateado
+        let R_GUIDE = 12;    // Radio de la polea guía verde
         let R_AXLE = 0.0076; // Radio físico de la polea de la cuerda
         let theta_0 = 0, omega_0 = 0, alpha = 9.63, y_0 = 0;
         let t = 0, currentTheta = 0, currentOmega = 0, currentV = 0, currentY = 0;
         let isRunning = false, lastTimestamp = 0, animationId = null;
         let dataHistory = [];
 
-        const pulleyX = 240, pulleyY = 160, groundY = 680;
+        const pulleyX = 250, pulleyY = 160, groundY = 680;
         const pxPerMeter = (groundY - pulleyY) / L_MAX;
 
         function resizeGraphs() {
@@ -199,6 +211,7 @@
 
         function updateInputs() {
             R_DISC = parseFloat(slRdisc.value);
+            R_GUIDE = parseFloat(slRguide.value);
             R_AXLE = parseFloat(slRaxle.value);
             theta_0 = parseFloat(slTheta.value);
             omega_0 = parseFloat(slOmega.value);
@@ -206,6 +219,7 @@
             y_0 = parseFloat(slY0.value);
 
             valRdisc.textContent = R_DISC + " px";
+            valRguide.textContent = R_GUIDE + " px";
             valRaxle.textContent = R_AXLE.toFixed(4) + " m";
             valTheta.textContent = theta_0.toFixed(2) + " rad";
             valOmega.textContent = omega_0.toFixed(2) + " rad/s";
@@ -223,7 +237,7 @@
             }
         }
 
-        [slRdisc, slRaxle, slTheta, slOmega, slAlpha, slY0].forEach(input => input.addEventListener('input', updateInputs));
+        [slRdisc, slRguide, slRaxle, slTheta, slOmega, slAlpha, slY0].forEach(input => input.addEventListener('input', updateInputs));
 
         function drawSimulation() {
             simCtx.clearRect(0, 0, simCanvas.width, simCanvas.height);
@@ -232,8 +246,9 @@
             simCtx.fillStyle = '#0984e3'; simCtx.fillRect(pulleyX - 50, groundY + 20, 100, 15);
             simCtx.fillStyle = '#bdc3c7'; simCtx.fillRect(pulleyX - 6, pulleyY - 60, 12, groundY - pulleyY + 80);
             
-            // 2. Brazo verde y Sensor negro
-            simCtx.fillStyle = '#27ae60'; simCtx.fillRect(pulleyX - 90, pulleyY - 5, 60, 14);
+            // 2. Brazo verde dinámico (se extiende según el radio de la rueda guía)
+            const armLength = 70 + (R_GUIDE - 12);
+            simCtx.fillStyle = '#27ae60'; simCtx.fillRect(pulleyX - armLength, pulleyY - 5, armLength - 30, 14);
             simCtx.fillStyle = '#2d3436'; simCtx.fillRect(pulleyX - 30, pulleyY - 10, 60, 50);
             simCtx.fillStyle = '#636e72'; simCtx.fillRect(pulleyX - 18, pulleyY - 22, 36, 12);
 
@@ -249,32 +264,31 @@
             simCtx.fillStyle = '#e74c3c'; 
             simCtx.fillRect(markerX - 2, pulleyY - 30, 4, discH);
 
-            // 4. Polea guía vertical (Verde lateral)
-            const guideX = pulleyX - 90;
+            // 4. Polea guía vertical verde (Radio dinámico R_GUIDE)
+            const guideX = pulleyX - armLength;
             const guideY = pulleyY + 2; 
-            const guideR = 12;
             
             simCtx.save();
             simCtx.translate(guideX, guideY);
             simCtx.rotate(currentY * 80); 
-            simCtx.beginPath(); simCtx.arc(0, 0, guideR, 0, 2 * Math.PI);
+            simCtx.beginPath(); simCtx.arc(0, 0, R_GUIDE, 0, 2 * Math.PI);
             simCtx.fillStyle = '#dcdde1'; simCtx.fill();
             simCtx.lineWidth = 1.5; simCtx.strokeStyle = '#636e72'; simCtx.stroke();
-            simCtx.beginPath(); simCtx.moveTo(-guideR, 0); simCtx.lineTo(guideR, 0); simCtx.stroke();
-            simCtx.beginPath(); simCtx.moveTo(0, -guideR); simCtx.lineTo(0, guideR); simCtx.stroke();
+            simCtx.beginPath(); simCtx.moveTo(-R_GUIDE, 0); simCtx.lineTo(R_GUIDE, 0); simCtx.stroke();
+            simCtx.beginPath(); simCtx.moveTo(0, -R_GUIDE); simCtx.lineTo(0, R_GUIDE); simCtx.stroke();
             simCtx.restore();
 
             // 5. Cuerda física
             let massY = pulleyY + (currentY * pxPerMeter);
             simCtx.beginPath();
-            simCtx.moveTo(pulleyX - 18, guideY - guideR); simCtx.lineTo(guideX, guideY - guideR);
-            simCtx.moveTo(guideX - guideR, guideY); simCtx.lineTo(guideX - guideR, massY);
+            simCtx.moveTo(pulleyX - 18, guideY - R_GUIDE); simCtx.lineTo(guideX, guideY - R_GUIDE);
+            simCtx.moveTo(guideX - R_GUIDE, guideY); simCtx.lineTo(guideX - R_GUIDE, massY);
             simCtx.strokeStyle = '#2c3e50'; simCtx.lineWidth = 2; simCtx.stroke();
 
             // 6. Masa Colgante
-            simCtx.fillStyle = '#7f8c8d'; simCtx.fillRect(guideX - guideR - 15, massY, 30, 42);
-            simCtx.fillStyle = '#b2bec3'; simCtx.fillRect(guideX - guideR - 5, massY, 8, 42);
-            simCtx.fillStyle = '#2d3436'; simCtx.fillRect(guideX - guideR - 2, massY - 6, 4, 6);
+            simCtx.fillStyle = '#7f8c8d'; simCtx.fillRect(guideX - R_GUIDE - 15, massY, 30, 42);
+            simCtx.fillStyle = '#b2bec3'; simCtx.fillRect(guideX - R_GUIDE - 5, massY, 8, 42);
+            simCtx.fillStyle = '#2d3436'; simCtx.fillRect(guideX - R_GUIDE - 2, massY - 6, 4, 6);
 
             outT.textContent = t.toFixed(2) + " s";
             outTheta.textContent = currentTheta.toFixed(2) + " rad";
@@ -348,7 +362,7 @@
         }
 
         function toggleInputs(disabled) {
-            slRdisc.disabled = slRaxle.disabled = slTheta.disabled = slOmega.disabled = slAlpha.disabled = slY0.disabled = disabled;
+            slRdisc.disabled = slRguide.disabled = slRaxle.disabled = slTheta.disabled = slOmega.disabled = slAlpha.disabled = slY0.disabled = disabled;
         }
 
         btnStart.addEventListener('click', () => {
