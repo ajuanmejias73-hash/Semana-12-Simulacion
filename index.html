@@ -9,7 +9,7 @@
         :root {
             --bg-dark: #1e272e; --panel-bg: #2d3436; --panel-card: #353b48;
             --accent-blue: #0984e3; --accent-green: #00b894; --accent-red: #d63031;
-            --accent-orange: #e17055; --accent-yellow: #f1c40f;
+            --accent-orange: #e17055; --accent-yellow: #f1c40f; --accent-purple: #a29bfe;
             --text-light: #dfe6e9; --text-muted: #b2bec3;
         }
 
@@ -21,17 +21,17 @@
         
         #app-container { display: flex; flex: 1; overflow: hidden; }
         
-        /* Panel Lateral */
-        #sidebar { width: 340px; background-color: var(--panel-bg); padding: 18px; display: flex; flex-direction: column; gap: 12px; box-shadow: 3px 0 12px rgba(0,0,0,0.4); z-index: 10; overflow-y: auto; }
-        .section-title { font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--accent-blue); border-bottom: 2px solid var(--accent-blue); padding-bottom: 6px; margin-bottom: 2px; }
-        .control-card { background-color: var(--panel-card); padding: 10px 14px; border-radius: 8px; border: 1px solid #485460; }
-        .control-label { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 6px; font-weight: 500; }
-        .val-badge { font-weight: 700; color: #74b9ff; font-family: monospace; font-size: 0.95rem; }
+        /* Panel Lateral de Controles */
+        #sidebar { width: 340px; background-color: var(--panel-bg); padding: 16px; display: flex; flex-direction: column; gap: 10px; box-shadow: 3px 0 12px rgba(0,0,0,0.4); z-index: 10; overflow-y: auto; }
+        .section-title { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--accent-blue); border-bottom: 2px solid var(--accent-blue); padding-bottom: 4px; margin-bottom: 2px; }
+        .control-card { background-color: var(--panel-card); padding: 8px 12px; border-radius: 8px; border: 1px solid #485460; }
+        .control-label { display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 4px; font-weight: 500; }
+        .val-badge { font-weight: 700; color: #74b9ff; font-family: monospace; font-size: 0.9rem; }
         input[type="range"] { width: 100%; cursor: pointer; accent-color: var(--accent-blue); }
         
         /* Botones */
-        .btn-group { display: flex; gap: 10px; margin-top: 5px; }
-        button { flex: 1; padding: 12px; border: none; border-radius: 6px; font-weight: 700; font-size: 0.9rem; cursor: pointer; text-transform: uppercase; transition: background 0.2s ease, transform 0.1s ease; }
+        .btn-group { display: flex; gap: 10px; margin-top: 2px; }
+        button { flex: 1; padding: 10px; border: none; border-radius: 6px; font-weight: 700; font-size: 0.85rem; cursor: pointer; text-transform: uppercase; transition: background 0.2s ease, transform 0.1s ease; }
         button:active { transform: scale(0.98); }
         #btn-start { background-color: var(--accent-green); color: white; }
         #btn-start:hover { background-color: #00a884; }
@@ -39,14 +39,14 @@
         #btn-reset:hover { background-color: #c0392b; }
 
         /* Dashboard */
-        #dashboard { background-color: var(--panel-card); border: 1px solid #485460; padding: 14px; border-radius: 8px; margin-top: auto; }
-        .metric-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.88rem; margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px dashed #485460; }
+        #dashboard { background-color: var(--panel-card); border: 1px solid #485460; padding: 12px; border-radius: 8px; margin-top: auto; }
+        .metric-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; margin-bottom: 5px; padding-bottom: 3px; border-bottom: 1px dashed #485460; }
         .metric-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-        .metric-val { font-family: 'Courier New', Courier, monospace; font-size: 1.05rem; font-weight: bold; }
+        .metric-val { font-family: 'Courier New', Courier, monospace; font-size: 1rem; font-weight: bold; }
 
         /* Área Visual */
         #workspace { flex: 1; display: flex; background-color: #2c3e50; }
-        #sim-wrapper { width: 400px; background-color: #ffffff; display: flex; justify-content: center; align-items: center; border-right: 3px solid #1e272e; position: relative; }
+        #sim-wrapper { width: 420px; background-color: #ffffff; display: flex; justify-content: center; align-items: center; border-right: 3px solid #1e272e; position: relative; }
         #graphs-wrapper { flex: 1; display: flex; flex-direction: column; padding: 14px; gap: 14px; background-color: #dcdde1; }
         .graph-card { flex: 1; background-color: #ffffff; border-radius: 8px; border: 1px solid #b2bec3; position: relative; box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow: hidden; }
         .graph-header { position: absolute; top: 8px; left: 14px; font-size: 0.85rem; font-weight: bold; color: #2d3436; background: rgba(255, 255, 255, 0.9); padding: 3px 8px; border-radius: 4px; border: 1px solid #cbd5e1; z-index: 5; }
@@ -63,7 +63,23 @@
     <div id="app-container">
         <!-- Panel Lateral de Controles -->
         <div id="sidebar">
-            <h2 class="section-title">Parámetros Iniciales</h2>
+            <h2 class="section-title">Parámetros Físicos y Geométricos</h2>
+
+            <div class="control-card" style="border-color: var(--accent-purple);">
+                <div class="control-label">
+                    <span>Radio del Disco (R<sub>disc</sub>):</span>
+                    <span class="val-badge" id="val-rdisc" style="color: var(--accent-purple);">50 px</span>
+                </div>
+                <input type="range" id="sl-rdisc" min="30" max="80" step="2" value="50">
+            </div>
+
+            <div class="control-card" style="border-color: var(--accent-yellow);">
+                <div class="control-label">
+                    <span>Radio del Eje/Polea Cuerda (r):</span>
+                    <span class="val-badge" id="val-raxle" style="color: var(--accent-yellow);">0.0076 m</span>
+                </div>
+                <input type="range" id="sl-raxle" min="0.0040" max="0.0150" step="0.0002" value="0.0076">
+            </div>
 
             <div class="control-card">
                 <div class="control-label">
@@ -89,10 +105,10 @@
                 <input type="range" id="sl-alpha" min="0.00" max="15.00" step="0.1" value="9.63">
             </div>
 
-            <div class="control-card" style="border-color: var(--accent-yellow);">
+            <div class="control-card">
                 <div class="control-label">
                     <span>Descenso Inicial (y₀):</span>
-                    <span class="val-badge" id="val-y0" style="color: var(--accent-yellow);">0.00 m</span>
+                    <span class="val-badge" id="val-y0">0.00 m</span>
                 </div>
                 <input type="range" id="sl-y0" min="0.00" max="1.00" step="0.01" value="0.00">
             </div>
@@ -103,34 +119,19 @@
             </div>
 
             <div id="dashboard">
-                <h2 class="section-title" style="margin-bottom: 10px;">Mediciones en Vivo</h2>
-                <div class="metric-row">
-                    <span>Tiempo (t):</span>
-                    <span class="metric-val" id="out-t" style="color: #00b894;">0.00 s</span>
-                </div>
-                <div class="metric-row">
-                    <span>Posición (&theta;):</span>
-                    <span class="metric-val" id="out-theta" style="color: #74b9ff;">0.00 rad</span>
-                </div>
-                <div class="metric-row">
-                    <span>Velocidad (&omega;):</span>
-                    <span class="metric-val" id="out-omega" style="color: #e17055;">0.00 rad/s</span>
-                </div>
-                <div class="metric-row">
-                    <span>Velocidad Lineal (v):</span>
-                    <span class="metric-val" id="out-v" style="color: #a29bfe;">0.000 m/s</span>
-                </div>
-                <div class="metric-row">
-                    <span>Descenso Cuerda (y):</span>
-                    <span class="metric-val" id="out-y" style="color: #f1c40f;">0.000 m</span>
-                </div>
+                <h2 class="section-title" style="margin-bottom: 8px;">Mediciones en Vivo</h2>
+                <div class="metric-row"><span>Tiempo (t):</span> <span class="metric-val" id="out-t" style="color: #00b894;">0.00 s</span></div>
+                <div class="metric-row"><span>Posición (&theta;):</span> <span class="metric-val" id="out-theta" style="color: #74b9ff;">0.00 rad</span></div>
+                <div class="metric-row"><span>Velocidad (&omega;):</span> <span class="metric-val" id="out-omega" style="color: #e17055;">0.00 rad/s</span></div>
+                <div class="metric-row"><span>Velocidad Lineal (v):</span> <span class="metric-val" id="out-v" style="color: #a29bfe;">0.000 m/s</span></div>
+                <div class="metric-row"><span>Descenso (y):</span> <span class="metric-val" id="out-y" style="color: #f1c40f;">0.000 m</span></div>
             </div>
         </div>
 
-        <!-- Área Central de Trabajo -->
+        <!-- Área Visual -->
         <div id="workspace">
             <div id="sim-wrapper">
-                <canvas id="simCanvas" width="400" height="750"></canvas>
+                <canvas id="simCanvas" width="420" height="750"></canvas>
             </div>
             <div id="graphs-wrapper">
                 <div class="graph-card">
@@ -146,7 +147,6 @@
     </div>
 
     <script>
-        // Referencias de UI
         const simCanvas = document.getElementById('simCanvas');
         const simCtx = simCanvas.getContext('2d');
         const canvasTheta = document.getElementById('graphTheta');
@@ -154,15 +154,19 @@
         const canvasOmega = document.getElementById('graphOmega');
         const ctxOmega = canvasOmega.getContext('2d');
 
+        const slRdisc = document.getElementById('sl-rdisc');
+        const slRaxle = document.getElementById('sl-raxle');
         const slTheta = document.getElementById('sl-theta');
         const slOmega = document.getElementById('sl-omega');
         const slAlpha = document.getElementById('sl-alpha');
-        const slY0 = document.getElementById('sl-y0'); 
+        const slY0 = document.getElementById('sl-y0');
 
+        const valRdisc = document.getElementById('val-rdisc');
+        const valRaxle = document.getElementById('val-raxle');
         const valTheta = document.getElementById('val-theta');
         const valOmega = document.getElementById('val-omega');
         const valAlpha = document.getElementById('val-alpha');
-        const valY0 = document.getElementById('val-y0'); 
+        const valY0 = document.getElementById('val-y0');
 
         const outT = document.getElementById('out-t');
         const outTheta = document.getElementById('out-theta');
@@ -172,19 +176,17 @@
         const btnStart = document.getElementById('btn-start');
         const btnReset = document.getElementById('btn-reset');
 
-        // Constantes Físicas 
-        const R_AXLE = 0.0076; // Radio eje desenrollo (m)
-        const L_MAX = 1.0; // Longitud máxima (m)
+        const L_MAX = 1.0; 
 
-        // Estado Físico
+        let R_DISC = 50;  // Radio visual del disco superior
+        let R_AXLE = 0.0076; // Radio físico de la polea de la cuerda
         let theta_0 = 0, omega_0 = 0, alpha = 9.63, y_0 = 0;
         let t = 0, currentTheta = 0, currentOmega = 0, currentV = 0, currentY = 0;
         let isRunning = false, lastTimestamp = 0, animationId = null;
         let dataHistory = [];
 
-        // Geometría Visual
-        const pulleyX = 230, pulleyY = 160, groundY = 680;
-        const pxPerMeter = (groundY - pulleyY) / L_MAX; 
+        const pulleyX = 240, pulleyY = 160, groundY = 680;
+        const pxPerMeter = (groundY - pulleyY) / L_MAX;
 
         function resizeGraphs() {
             canvasTheta.width = canvasTheta.parentElement.clientWidth;
@@ -196,11 +198,15 @@
         window.addEventListener('resize', resizeGraphs);
 
         function updateInputs() {
+            R_DISC = parseFloat(slRdisc.value);
+            R_AXLE = parseFloat(slRaxle.value);
             theta_0 = parseFloat(slTheta.value);
             omega_0 = parseFloat(slOmega.value);
             alpha = parseFloat(slAlpha.value);
             y_0 = parseFloat(slY0.value);
 
+            valRdisc.textContent = R_DISC + " px";
+            valRaxle.textContent = R_AXLE.toFixed(4) + " m";
             valTheta.textContent = theta_0.toFixed(2) + " rad";
             valOmega.textContent = omega_0.toFixed(2) + " rad/s";
             valAlpha.textContent = alpha.toFixed(2) + " rad/s²";
@@ -212,31 +218,42 @@
                 currentV = omega_0 * R_AXLE;
                 currentY = y_0;
                 dataHistory = []; 
-                
                 drawSimulation();
                 drawGraphs();
             }
         }
 
-        [slTheta, slOmega, slAlpha, slY0].forEach(input => input.addEventListener('input', updateInputs));
+        [slRdisc, slRaxle, slTheta, slOmega, slAlpha, slY0].forEach(input => input.addEventListener('input', updateInputs));
 
         function drawSimulation() {
             simCtx.clearRect(0, 0, simCanvas.width, simCanvas.height);
 
+            // 1. Base y Varilla
             simCtx.fillStyle = '#0984e3'; simCtx.fillRect(pulleyX - 50, groundY + 20, 100, 15);
             simCtx.fillStyle = '#bdc3c7'; simCtx.fillRect(pulleyX - 6, pulleyY - 60, 12, groundY - pulleyY + 80);
-            simCtx.fillStyle = '#27ae60'; simCtx.fillRect(pulleyX - 85, pulleyY - 5, 55, 14);
+            
+            // 2. Brazo verde y Sensor negro
+            simCtx.fillStyle = '#27ae60'; simCtx.fillRect(pulleyX - 90, pulleyY - 5, 60, 14);
             simCtx.fillStyle = '#2d3436'; simCtx.fillRect(pulleyX - 30, pulleyY - 10, 60, 50);
             simCtx.fillStyle = '#636e72'; simCtx.fillRect(pulleyX - 18, pulleyY - 22, 36, 12);
 
-            const discW = 100, discH = 8;
-            simCtx.fillStyle = '#ecf0f1'; simCtx.fillRect(pulleyX - discW/2, pulleyY - 30, discW, discH);
-            simCtx.strokeStyle = '#bdc3c7'; simCtx.strokeRect(pulleyX - discW/2, pulleyY - 30, discW, discH);
+            // 3. Disco superior plateado (Radio dinámico R_DISC)
+            const discH = 8;
+            simCtx.fillStyle = '#ecf0f1'; 
+            simCtx.fillRect(pulleyX - R_DISC, pulleyY - 30, R_DISC * 2, discH);
+            simCtx.strokeStyle = '#bdc3c7'; 
+            simCtx.strokeRect(pulleyX - R_DISC, pulleyY - 30, R_DISC * 2, discH);
 
-            let markerX = pulleyX + (discW/2 - 4) * Math.sin(currentTheta);
-            simCtx.fillStyle = '#e74c3c'; simCtx.fillRect(markerX - 2, pulleyY - 30, 4, discH);
+            // Marca roja sobre el disco dinámico
+            let markerX = pulleyX + (R_DISC - 6) * Math.sin(currentTheta);
+            simCtx.fillStyle = '#e74c3c'; 
+            simCtx.fillRect(markerX - 2, pulleyY - 30, 4, discH);
 
-            const guideX = pulleyX - 85, guideY = pulleyY + 2, guideR = 12;
+            // 4. Polea guía vertical (Verde lateral)
+            const guideX = pulleyX - 90;
+            const guideY = pulleyY + 2; 
+            const guideR = 12;
+            
             simCtx.save();
             simCtx.translate(guideX, guideY);
             simCtx.rotate(currentY * 80); 
@@ -247,12 +264,14 @@
             simCtx.beginPath(); simCtx.moveTo(0, -guideR); simCtx.lineTo(0, guideR); simCtx.stroke();
             simCtx.restore();
 
+            // 5. Cuerda física
             let massY = pulleyY + (currentY * pxPerMeter);
             simCtx.beginPath();
             simCtx.moveTo(pulleyX - 18, guideY - guideR); simCtx.lineTo(guideX, guideY - guideR);
             simCtx.moveTo(guideX - guideR, guideY); simCtx.lineTo(guideX - guideR, massY);
             simCtx.strokeStyle = '#2c3e50'; simCtx.lineWidth = 2; simCtx.stroke();
 
+            // 6. Masa Colgante
             simCtx.fillStyle = '#7f8c8d'; simCtx.fillRect(guideX - guideR - 15, massY, 30, 42);
             simCtx.fillStyle = '#b2bec3'; simCtx.fillRect(guideX - guideR - 5, massY, 8, 42);
             simCtx.fillStyle = '#2d3436'; simCtx.fillRect(guideX - guideR - 2, massY - 6, 4, 6);
@@ -267,7 +286,6 @@
         function drawGraphs() {
             ctxTheta.clearRect(0, 0, canvasTheta.width, canvasTheta.height);
             ctxOmega.clearRect(0, 0, canvasOmega.width, canvasOmega.height);
-
             drawGrid(ctxTheta, canvasTheta); drawGrid(ctxOmega, canvasOmega);
             if (dataHistory.length === 0) return;
 
@@ -299,7 +317,6 @@
 
         function gameLoop(timestamp) {
             if (!isRunning) return;
-
             if (!lastTimestamp) lastTimestamp = timestamp;
             let dt = (timestamp - lastTimestamp) / 1000;
             lastTimestamp = timestamp;
@@ -331,7 +348,7 @@
         }
 
         function toggleInputs(disabled) {
-            slTheta.disabled = slOmega.disabled = slAlpha.disabled = slY0.disabled = disabled;
+            slRdisc.disabled = slRaxle.disabled = slTheta.disabled = slOmega.disabled = slAlpha.disabled = slY0.disabled = disabled;
         }
 
         btnStart.addEventListener('click', () => {
